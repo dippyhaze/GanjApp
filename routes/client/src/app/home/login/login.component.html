@@ -1,0 +1,64 @@
+<body>
+    <div class="view">
+        <div class="container pt-5">
+            <form [formGroup]="form" (ngSubmit)="login()"class="form-horizontal" role="form">
+                <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6 login-title">
+                        <h2 class="display-3 text-center">GANJAPP</h2>
+                        <h2 class="display-4 text-center">il portale dei drogati</h2>
+                        <hr>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6">
+                        <div class="form-group has-danger">
+                            <label class="sr-only" for="email">Indirizzo mail</label>
+                            <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+                                <div class="input-group-addon" style="width: 2.6rem"><i class="fa fa-at"></i></div>
+                                <input type="text" formControlName="username" class="form-control" id="email"
+                                       placeholder="loveWeed@example.thc" required autofocus>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-control-feedback">
+                            <span class="align-middle error-style">
+                                <i class="fa fa-close error-style"></i> Errore esempio
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="sr-only" for="password">Password</label>
+                            <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+                                <div class="input-group-addon" style="width: 2.6rem"><i class="fa fa-key"></i></div>
+                                <input type="password" formControlName="password" class="form-control" id="password"
+                                       placeholder="Password" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-control-feedback">
+                            <span class="text-danger align-middle">
+                            <!-- Put password error message here -->    
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row" style="padding-top: 1rem">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6 mx-auto">
+                        <button type="submit" [disabled]="!form.valid"  type="submit" class="btn btn-success mr-5"><i class="fa fa-sign-in"></i> Login</button>
+                        <button type="submit" class="btn btn-outline-warning "><i class="fa fa-user-plus mr-1"></i>Registrati</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    </body>
