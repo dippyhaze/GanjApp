@@ -1,11 +1,14 @@
 var express = require('express');
 var router = express.Router();
 var mongojs = require('mongojs');
-var dbObj = mongojs('mongodb://dippyhaze:dippyhaze@ds127854.mlab.com:27854/ganjapp', ['Users']);
+var dbObj = mongojs('mongodb://dippyhaze:dippyhaze@ds127854.mlab.com:27854/ganjapp', ['users']);
+var UserViewModel =require('./../viewModels/user_viewModel');
+var UserDbModel =require('./../models/user');
+var bcrypt = require('bcrypt-nodejs');
 
 // Get All USERS
 router.get('/',function(req, res, next){
-    dbObj.Users.find(function(error,users){
+    dbObj.users.find(function(error,users){
         if(error){
             res.send(error);
         }
@@ -15,7 +18,7 @@ router.get('/',function(req, res, next){
 
 //GET Single User
 router.get('/:id',function(req, res, next){
-    dbObj.Users.findOne({_id: mongojs.ObjectId(req.params.id)},function(error,user){
+    dbObj.users.findOne({_id: mongojs.ObjectId(req.params.id)},function(error,user){
         if(error){
             res.send(error);
         }
@@ -26,27 +29,48 @@ router.get('/:id',function(req, res, next){
 });
 
 //POST Save Users
-router.post('/',function(req, res, next){
+router.post('/create',function(req, res, next){
    var user = req.body;
-   if((!user.title) || (user.isDone + '')){
+   if(!user) {
        res.status = 400;
        res.json({
            error : 'missing Parameters'
        })
    } else {
-       dbObj.Users.save(task , function(error,user){
-           if(error){
-               res.send(error);
-           } else {
-               res.json(user);
-           }
-       })
+       dbObj.users.findOne({username: req.body.username},function(error,user){
+            if(error){
+                res.send(error);
+            }
+            else if (user) {
+                res.send('utente gia presente nel DB');
+            }
+            else {
+                console.log(user);
+                UserViewModel.username = req.body.username;
+                UserViewModel.password = req.body.password;
+                UserViewModel.email = req.body.email;
+                UserViewModel.name = req.body.name;
+                UserViewModel.lastname = req.body.lastname;
+                UserViewModel.role = 'user';
+
+                bcrypt.hash(UserViewModel.password, null,null, function(err, hash) {
+                    UserViewModel.password = hash;
+                    });
+                dbObj.users.save(UserViewModel , function(error,user){
+                    if(error){
+                        res.send(error);
+                    } else {
+                        res.json(UserViewModel);
+                    }
+                })
+            }
+        })
    }
 });
 
 //DELETE Delete user
 router.delete('/:id',function(req, res, next){
-    dbObj.Users.remove({_id: mongojs.ObjectId(req.params.id)},function(error,user){
+    dbObj.users.remove({_id: mongojs.ObjectId(req.params.id)},function(error,user){
         if(error){
             res.send(error);
         }

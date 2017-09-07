@@ -2,19 +2,49 @@ var express = require('express');
 var router = express.Router();
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://dippyhaze:dippyhaze@ds127854.mlab.com:27854/ganjapp');
-var User = mongoose.model('Users', { username: String, password: String , confirmPassword: String,email: String,name: String,lastname: String, role: String });
+var mongojs = require('mongojs');
+var dbObj = mongojs('mongodb://dippyhaze:dippyhaze@ds127854.mlab.com:27854/ganjapp', ['users']);
+var DbUser = require('./../models/user');
+var UserViewModel = require('./../viewModels/user_viewModel');
+var jwt  = require('jsonwebtoken');
 
-var mario = new User({ name: 'mario' });
-mario.save(function (err) {
-  if (err) {
-    console.log(err);
-  } else {
-    console.log('mario');
-  }
-});
+router.post('/', function(req, res, next){
+    dbObj.users.findOne({
+        username : req.body.username
+    }, function(err, user) {
 
-router.get('/', function(req, res, next){
-    res.render('index.html');
+        if (err){
+            res.send(err.message || '** no unicorns here **');
+            throw err;
+        } 
+
+        if (!user) {
+            // TODO: Gestione Errori 
+            res.send({ success: false, message: 'Authentication failed. User not found.' });
+        
+        } else if (user) {
+        // check if password matches
+            if (user.password != req.body.password) {
+                res.json({ success: false, message: 'Authentication failed. Wrong password.' });
+            }   else {
+                    UserViewModel.id = user.id;
+                    UserViewModel.username = user.username;
+                    UserViewModel.email = user.email;
+                    UserViewModel.role = user.role;
+                    // if user is found and password is right
+                    // create a token
+                    var token = jwt.sign({'user': UserViewModel},'token')
+                    // return the information including token as JSON
+                    res.json({
+                        success: true,
+                        message: 'Enjoy your token!',
+                        token: token,
+                        user: UserViewModel
+                    });
+                    console.log(UserViewModel);
+                }   
+        }
+    });
 });
 
 module.exports = router;

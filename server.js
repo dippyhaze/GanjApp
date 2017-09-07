@@ -2,6 +2,9 @@ var express = require('express');
 var cors = require('cors');
 const path = require('path');
 var body_parser = require('body-parser');
+var mongoose = require('mongoose');
+var jwt  = require('jsonwebtoken');
+var User = require('./models/user');
 
 var port = 3000;
 
@@ -12,6 +15,8 @@ var auth = require('./routes/authentication.js');
 var app = express();
 app.use(cors());
 
+//Connecting to DB
+mongoose.connect('mongodb://dippyhaze:dippyhaze@ds127854.mlab.com:27854/ganjapp');
 // View Engine
 app.set('views', path.join(__dirname,'/views'));
 app.set('view engine','ejs');
