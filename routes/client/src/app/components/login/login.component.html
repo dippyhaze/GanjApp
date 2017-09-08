@@ -17,16 +17,9 @@
                             <label class="sr-only" for="email">Indirizzo mail</label>
                             <div class="input-group mb-2 mr-sm-2 mb-sm-0">
                                 <div class="input-group-addon" style="width: 2.6rem"><i class="fa fa-at"></i></div>
-                                <input type="text" formControlName="username" class="form-control" id="email"
+                                <input type="text" formControlName="username" class="form-control" id="username"
                                        placeholder="loveWeed@example.thc" required autofocus>
                             </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="form-control-feedback">
-                            <span class="align-middle error-style">
-                                <i class="fa fa-close error-style"></i> Errore esempio
-                            </span>
                         </div>
                     </div>
                 </div>
@@ -50,13 +43,23 @@
                         </div>
                     </div>
                 </div>
-                
+                <div *ngIf="showAlert" class="alert alert-warning alert-dismissible fade show col-md-6 mx-auto" role="alert">
+                    <button (click)="dismissAlert()" type="button" class="close" data-dismiss="alert" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                    <strong>{{message}}</strong>
+                  </div>
                 <div class="row" style="padding-top: 1rem">
-                    <div class="col-md-3"></div>
-                    <div class="col-md-6 mx-auto">
-                        <button type="submit" [disabled]="!form.valid"  type="submit" class="btn btn-success mr-5"><i class="fa fa-sign-in"></i> Login</button>
-                        <button type="submit" class="btn btn-outline-warning "><i class="fa fa-user-plus mr-1"></i>Registrati</button>
+                    <div class="col-md-3">
+                        
                     </div>
+                    <div class="col-md-6 mx-auto">
+                        <button type="submit" [disabled]="!form.valid" class="btn btn-success mr-5"><i class="fa fa-sign-in"></i> Login</button>
+                        <button  (click)="changeRoute('register')" type="button" class="btn btn-outline-warning "><i class="fa fa-user-plus mr-1"  ></i>Registrati</button>
+                   
+                   
+                    </div>
+                    
                 </div>
             </form>
         </div>

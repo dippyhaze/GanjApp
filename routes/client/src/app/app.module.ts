@@ -7,14 +7,16 @@ import { appRoutes } from './app.route';
 import { FormsModule, ReactiveFormsModule  }   from '@angular/forms';
 
 import { AppComponent } from './app.component';
-import { WelcomeComponent } from './home/welcome/welcome.component';
-import { LoginComponent } from './home/login/login.component';
+import { WelcomeComponent } from './components/welcome/welcome.component';
+import { LoginComponent } from './components/login/login.component';
+import { RegisterComponent } from './components/register/register.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     WelcomeComponent,
-    LoginComponent
+    LoginComponent,
+    RegisterComponent
     
   ],
   imports: [FormsModule,

@@ -20,10 +20,13 @@ export class LoginComponent {
   userLanguage: string
   userId: string
   success: boolean = false;
+  showAlert : boolean = false;
+  message: string;
   
   
   constructor( private fb: FormBuilder,
-               private userService : UserService){
+               private userService : UserService,
+               private router : Router){
 
     this.form = this.fb.group({
       "username": [''],
@@ -32,7 +35,13 @@ export class LoginComponent {
  
    }
 
+   changeRoute(string) {
+    this.router.navigate(["/" + string]);
+}
 
+   dismissAlert(){
+    this.showAlert = false;
+   }
 
    login(){
      let formModel = this.form.value;
@@ -43,11 +52,16 @@ export class LoginComponent {
        this.userReturnModel = data.user;
        this.token = data.token;
        this.success = data.success;
-       console.log(this.userReturnModel);
+       this.message = data.message;
+       console.log(data);
 
-       if(this.success = true){
+       if(this.success == true){
         localStorage.setItem('currentUser', JSON.stringify({ username: this.userReturnModel.username, token: this.token, roles: this.userReturnModel.role}));
+        this.changeRoute('welcome');
         
+       }
+       else if (this.success == false) {
+         this.showAlert = true;
        }
 
        
