@@ -27,10 +27,7 @@ router.post('/', function(req, res, next){
             if (user.password != req.body.password) {
                 res.json({ success: false, message: 'Authentication failed. Wrong password.' });
             }   else {
-                    UserViewModel.id = user.id;
-                    UserViewModel.username = user.username;
-                    UserViewModel.email = user.email;
-                    UserViewModel.role = user.role;
+                    UserViewModel = new UserViewModel(user);
                     // if user is found and password is right
                     // create a token
                     var token = jwt.sign({'user': UserViewModel},'token')
@@ -41,7 +38,6 @@ router.post('/', function(req, res, next){
                         token: token,
                         user: UserViewModel
                     });
-                    console.log(UserViewModel);
                 }   
         }
     });

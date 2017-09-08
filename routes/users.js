@@ -45,18 +45,13 @@ router.post('/create',function(req, res, next){
                 res.send('utente gia presente nel DB');
             }
             else {
-                console.log(user);
-                UserViewModel.username = req.body.username;
-                UserViewModel.password = req.body.password;
-                UserViewModel.email = req.body.email;
-                UserViewModel.name = req.body.name;
-                UserViewModel.lastname = req.body.lastname;
-                UserViewModel.role = 'user';
+                UserDbModel = new UserDbModel(req.body);
+                UserViewModel =  new UserViewModel(req.body);
 
-                bcrypt.hash(UserViewModel.password, null,null, function(err, hash) {
-                    UserViewModel.password = hash;
+                bcrypt.hash(UserDbModel.password, null,null, function(err, hash) {
+                    UserDbModel.password = hash;
                     });
-                dbObj.users.save(UserViewModel , function(error,user){
+                dbObj.users.save(UserDbModel , function(error,user){
                     if(error){
                         res.send(error);
                     } else {

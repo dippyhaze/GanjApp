@@ -1,10 +1,6 @@
 var express = require('express');
 var mongoose = require('mongoose');
-var User = require('./../models/user');
-    module.exports = UserViewModel = new User(
-            { 
-                username: String,
-                email: String,
-                role: String
-            }
-    );
+
+var schema = new mongoose.Schema({ username: 'string', email: 'string', role: 'string' });
+module.exports = UserViewModel = mongoose.model('UserViewModel', schema);
+    
