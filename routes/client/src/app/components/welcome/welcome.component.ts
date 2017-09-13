@@ -12,10 +12,12 @@ export class WelcomeComponent {
   
 
 
-  constructor(private http: Http){
-    /*this.http.get('http://192.168.1.16:3000/api/users').subscribe(data =>{
-      console.log(data.json());
-    })*/
+  constructor(private http: Http,
+    private router : Router){
+    
+}
+changeRoute(string) {
+  this.router.navigate(["/" + string]);
 }
 }
 

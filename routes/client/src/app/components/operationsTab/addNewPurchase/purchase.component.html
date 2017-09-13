@@ -1,11 +1,12 @@
+
 <body>
     <div class="view">
         <div class="container pt-5">
-            <form [formGroup]="form" (ngSubmit)="register()"class="form-horizontal" role="form">
+            <form [formGroup]="form" (ngSubmit)="addNewPurchase()"class="form-horizontal" role="form">
                 <div class="row">
                     <div class="col-md-3"></div>
                     <div class="col-md-6 login-title">
-                        <h2 class="display-3 text-center">Registrati</h2>
+                        <h2 class="display-3 text-center">Aggiungi acquisto</h2>
                       <hr>
                     </div>
                 </div>
@@ -13,11 +14,11 @@
                     <div class="col-md-3"></div>
                     <div class="col-md-6">
                         <div class="form-group has-danger">
-                            <label class="sr-only" for="email">Indirizzo mail</label>
+                            <label class="sr-only" for="email">Totale speso </label>
                             <div class="input-group mb-2 mr-sm-2 mb-sm-0">
                                 <div class="input-group-addon" style="width: 2.6rem"><i class="fa fa-at"></i></div>
-                                <input type="text" formControlName="email" class="form-control" id="username"
-                                       placeholder="loveWeed@example.thc" required autofocus>
+                                <input type="number" formControlName="AmountSpent" class="form-control" id="username"
+                                       placeholder="Totale speso" required autofocus>
                             </div>
                         </div>
                     </div>
@@ -26,11 +27,11 @@
                     <div class="col-md-3"></div>
                     <div class="col-md-6">
                         <div class="form-group has-danger">
-                            <label class="sr-only" for="email">Nome</label>
+                            <label class="sr-only" for="email">Comprato da</label>
                             <div class="input-group mb-2 mr-sm-2 mb-sm-0">
                                 <div class="input-group-addon" style="width: 2.6rem"><i class="fa fa-at"></i></div>
-                                <input type="text" formControlName="username" class="form-control" id="name"
-                                       placeholder="Jerry Senna" required autofocus>
+                                <input type="text" formControlName="BoughtBy" class="form-control" id="name"
+                                       placeholder="Comprato da" required autofocus>
                             </div>
                         </div>
                     </div>
@@ -39,29 +40,42 @@
                     <div class="col-md-3"></div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label class="sr-only" for="password">Password</label>
-                            <div class="input-group mb-2 mr-sm-2 mb-sm-0">
-                                <div class="input-group-addon" style="width: 2.6rem"><i class="fa fa-key"></i></div>
-                                <input type="password" formControlName="password" class="form-control" id="password"
-                                       placeholder="Password" required>
+                            <select class="custom-select mb-2 mr-sm-2 mb-sm-0 col-md-6" id="inlineFormCustomSelect" formControlName="Quality">
+                              <option selected>Qualità (da 1 a 5)</option>
+                              <option value="1">1</option>
+                              <option value="2">2</option>
+                              <option value="3">3</option>
+                              <option value="4">4</option>
+                              <option value="4">5</option>
+                            </select>
                             </div>
                         </div>
                     </div>
-                    
+                <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="sr-only" for="password">Quantità</label>
+                            <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+                                <div class="input-group-addon" style="width: 2.6rem"><i class="fa fa-key"></i></div>
+                                <input type="number" formControlName="Quantity" class="form-control" id="ConfirmPassword"
+                                       placeholder="Quantità" required>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="row">
                     <div class="col-md-3"></div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label class="sr-only" for="password">Conferma Password</label>
+                            <label class="sr-only" for="password">Prezzo per G</label>
                             <div class="input-group mb-2 mr-sm-2 mb-sm-0">
                                 <div class="input-group-addon" style="width: 2.6rem"><i class="fa fa-key"></i></div>
-                                <input type="password" formControlName="confirmPassword" class="form-control" id="ConfirmPassword"
-                                       placeholder="Conferma Password" required>
+                                <input type="number" formControlName="GPrice" class="form-control" id="ConfirmPassword"
+                                       placeholder="Prezzo per G" required>
                             </div>
                         </div>
                     </div>
-                    
                 </div>
                 <div *ngIf="showAlert" class="alert alert-warning alert-dismissible fade show col-md-6 mx-auto" role="alert">
                     <button (click)="dismissAlert()" type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -75,11 +89,12 @@
                     </div>
                     <div class="col-md-6 mx-auto">
                       
-                        <button  [disabled]="!form.valid"  type="submit" class="btn btn-outline-warning "><i class="fa fa-user-plus mr-1"  ></i>Conferma</button>
-                        <button  (click)="changeRoute('login')" type="button" class="btn btn-outline-success "><i class="fa fa-user-plus mr-1"  ></i>Vai alla login</button>
+                        <button  [disabled]="!form.valid"  type="submit" class="btn btn-outline-warning "><i class="fa fa-user-plus mr-1"  ></i>Aggiungi</button>
+                       
                 </div>
                 </div>
             </form>
         </div>
     </div>
+
     </body>

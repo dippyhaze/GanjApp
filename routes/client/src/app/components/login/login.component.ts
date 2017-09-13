@@ -52,11 +52,12 @@ export class LoginComponent {
        this.userReturnModel = data.user;
        this.token = data.token;
        this.success = data.success;
-       this.message = data.message;
+       this.message = data.msg;
+       this.userId = data.user.id
        console.log(data);
 
        if(this.success == true){
-        localStorage.setItem('currentUser', JSON.stringify({ username: this.userReturnModel.username, token: this.token, roles: this.userReturnModel.role}));
+        localStorage.setItem('currentUser', JSON.stringify({ userId :this.userId ,username: this.userReturnModel.username, token: this.token, roles: this.userReturnModel.role}));
         this.changeRoute('welcome');
         
        }
