@@ -44,7 +44,7 @@ router.post('/insertNewExpense', (req, res, next) => {
     });
 });
 
-router.get('/MonthSummaryExpenses/:id', function (req, res, next) {
+router.get('/CurrentMonthSummaryExpenses/:id', function (req, res, next) {
     var monthString = '';
     var FormattedDate = CurrentDate.format('LLL');
     var SplittedDate = FormattedDate.split(" ");
@@ -106,13 +106,13 @@ router.get('/getAllCurrentMonthsExpenses/:id',function(req,res,next){
         if(error){
                 res.send(error);
             }
-            else if (expenses) {
+            else if ((expenses) && (expenses !== null)) {
                var ExpenseArray = new ExpensesArray({ExpensesArray:[],TotalAmount:0});
                 for (var i = 0; i < expenses.length; i++) {
                     ExpenseArray.ExpensesArray.push(expenses[i]);
                     ExpenseArray.TotalAmount = ExpenseArray.TotalAmount + expenses[i].AmountSpent;
                 }
-                res.send(ExpenseArray)
+                res.send(ExpenseArray);
             }            
             else {
                 console.log('No Weed Bought this Month!');
