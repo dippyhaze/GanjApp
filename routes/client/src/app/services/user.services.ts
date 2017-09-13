@@ -16,12 +16,22 @@ export class UserService {
     login(model : any){
 
         localStorage.removeItem('currentUser');
-        return this.http.post('http://192.168.1.16:3000/api/login', model)
+        return this.http.post('http://192.168.1.16:3000/users/authenticate', model)
         .map((res: Response)=> res.json());
-        
-
     }
 
+    register(model : any){
+
+        return this.http.post('http://192.168.1.16:3000/users/register', model)
+                .map((res: Response)=> res.json());
+           
+           
+    }
+
+    addNewPurchase(model :any){
+        return this.http.post('http://192.168.1.16:3000/expenses/insertNewExpense', model)
+        .map((res: Response)=> res.json());
+    }
     
 }
 

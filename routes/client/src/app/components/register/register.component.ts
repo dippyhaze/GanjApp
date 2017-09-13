@@ -14,6 +14,9 @@ import {User} from './../../models/userModels';
 export class RegisterComponent {
   title = 'app';
   form: FormGroup;
+  success: boolean = false;
+  showAlert : boolean = false;
+  message: string;
   
   
   
@@ -22,8 +25,11 @@ export class RegisterComponent {
                private router : Router){
 
     this.form = this.fb.group({
+      "email": [''],
       "username": [''],
-      "password": ['']
+      "password": [''],
+      "confirmPassword" :['']
+
   });
  
    }
@@ -32,5 +38,32 @@ export class RegisterComponent {
     this.router.navigate(["/" + string]);
 }
 
-   }
+dismissAlert(){
+  this.showAlert = false;
+ }
+
+
+register(){
+  let formModel = this.form.value;
+  
+
+  this.userService.register(formModel).subscribe(data =>{
+    this.success = data.success;
+    this.message = data.msg;
+    console.log(data);
+
+    if(this.success == true){
+     
+      this.changeRoute('login');
+      
+     }
+     else if (this.success == false) {
+       this.showAlert = true;
+     }
+
+  });
+
+}
+  
+}
 
