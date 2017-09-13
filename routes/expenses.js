@@ -63,7 +63,7 @@ router.get('/getAllMonthsExpenses/:id/:monthnmb',function(req,res,next){
             }
             else if (expenses) {
                 res.send(expenses);
-            }
+            }            
             else {
                 console.log('No Weed Bought this Month!');
             }
