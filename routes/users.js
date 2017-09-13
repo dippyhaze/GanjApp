@@ -1,106 +1,76 @@
-var express = require('express');
-var router = express.Router();
-var mongojs = require('mongojs');
-var dbObj = mongojs('mongodb://dippyhaze:dippyhaze@ds127854.mlab.com:27854/ganjapp', ['users']);
-var UserViewModel =require('./../viewModels/user_viewModel');
-var UserDbModel =require('./../models/user');
-var bcrypt = require('bcrypt-nodejs');
+const express = require("express");
+const router = express.Router();
+const User = require("../models/user");
+const passport = require("passport");
+const jwt = require("jsonwebtoken");
+const config = require("../config/database");
 
-// Get All USERS
-router.get('/',function(req, res, next){
-    dbObj.users.find(function(error,users){
-        if(error){
-            res.send(error);
-        }
-        res.json(users);
+
+
+router.post('/register',(req,res,next)=>{
+    let newUser = new User({
+        email:req.body.email,
+        username:req.body.username,
+        password:req.body.password,
+        role:'user'
     })
+
+    User.addUser(newUser,(err,user) =>{
+        if(err){
+            res.json({success:false,msg:"Failed to register"});
+            return res.send();
+        }
+
+        if(!user){
+            res.json({success:false,msg:"Missing Parameters"});
+        }
+        else {
+           res.json({success:true,msg:"Okay to register"});
+        }
+    });
 });
 
-//GET Single User
-router.get('/:id',function(req, res, next){
-    dbObj.users.findOne({_id: mongojs.ObjectId(req.params.id)},function(error,user){
-        if(error){
-            res.send(error);
+router.post('/authenticate',(req,res,next)=>{
+    const username = req.body.username;
+    const password = req.body.password;
+
+    User.getUserByUsername(username,(err,user)=>{
+        if(err){
+            throw err;
+        }
+        if(!user){
+            return res.json({success:false,msg:"no user found"});
         }
         else{
-            res.json(user);
-        }
-    })
-});
-
-//POST Save Users
-router.post('/create',function(req, res, next){
-   var user = req.body;
-   if(!user) {
-       res.status = 400;
-       res.json({
-           error : 'missing Parameters'
-       })
-   } else {
-       dbObj.users.findOne({username: req.body.username},function(error,user){
-            if(error){
-                res.send(error);
-            }
-            else if (user) {
-                res.send('utente gia presente nel DB');
-            }
-            else {
-                UserDbModel = new UserDbModel(req.body);
-                UserViewModel =  new UserViewModel(req.body);
-
-                bcrypt.hash(UserDbModel.password, null,null, function(err, hash) {
-                    UserDbModel.password = hash;
+            User.comparePassword(password,user.password,(err,isMatch)=>{
+                if(err){
+                    throw err;
+                }
+                if(isMatch){
+                    const token = jwt.sign({user},config.secret,{
+                        expiresIn:1200
                     });
-                dbObj.users.save(UserDbModel , function(error,user){
-                    if(error){
-                        res.send(error);
-                    } else {
-                        res.json(UserViewModel);
+                    res.send({
+                        success:true,
+                        token:'jwt '+token,
+                        user:{
+                            id:user.id,
+                            username:user.username,
+                            name:user.name,
+                            email:user.email,
+                            role:user.role,
+                        }})
+                }
+                    else {
+                        res.send({success:false,msg:"wrong pw"});
                     }
-                })
-            }
-        })
-   }
-});
-
-//DELETE Delete user
-router.delete('/:id',function(req, res, next){
-    dbObj.users.remove({_id: mongojs.ObjectId(req.params.id)},function(error,user){
-        if(error){
-            res.send(error);
-        }
-        else{
-            res.json(user);
+            });
         }
     })
 });
 
-//PUT Update user
-router.put('/:id',function(req, res, next){
-    var user = req.body;
-    var updUser = {};
-
-    // if(task.isDone){
-    //     updTask.isDone = task.isDone;
-    // }
-    // if(task.title){
-    //     updTask.title = task.title;
-    // }
-    // if(!updTask){
-    //     res.status = 400;
-    //     res.json({
-    //         error:'Bad Data'
-    //     })
-    // } else {
-    //     dbObj.tasks.update({_id: mongojs.ObjectId(req.params.id)},updTask,{},function(error,task){
-    //         if(error){
-    //             res.send(error);
-    //         }
-    //         else{
-    //             res.json(task);
-    //         }
-    //     })
-    // }
+router.get('/profile',passport.authenticate('jwt',{session:false}),(req,res,next)=>{
+    res.json({user:req.user});
 });
 
 

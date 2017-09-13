@@ -1,64 +1,84 @@
-var express = require('express');
-var router = express.Router();
+const express = require("express");
+const router = express.Router();
+const Expense = require("../models/expense");
+const singleExpense = Expense.Expense;
+const ExpenseSummary = Expense.ExpenseSummary;
+const config = require("../config/database");
 var moment = require('moment');
 var CurrentDate = moment();
-var mongojs = require('mongojs');
-var dbObj = mongojs('mongodb://dippyhaze:dippyhaze@ds127854.mlab.com:27854/ganjapp', ['expenses']);
-var expenseViewModel = require('./../viewModels/month_viewModel');
-var expenseDbModel = require('./../models/month');
-var singleExpense = expenseDbModel;
-var ExpenseSummary = expenseViewModel.MonthSummaryModel;
 
-router.post('/insertNewExpense', function(req, res, next){
-    expenseViewModel = req.body;
-    singleExpense = new singleMonth(req.body);
-    dbObj.expenses.save(singleExpense , function(error,month){
-                    if(error){
-                        res.send(error);
-                    } else {
-                        res.json('That\'s Okay Madaffaca! Speriamo che '+singleExpense.BoughtBy+' abbia il Ganjone Oggi!');
-                    }
-                })
-});
 
-router.get('/MonthSummaryExpenses/:id',function(req,res,next){
+
+router.post('/insertNewExpense', (req, res, next) => {
     var monthString = '';
     var FormattedDate = CurrentDate.format('LLL');
     var SplittedDate = FormattedDate.split(" ");
     monthString = SplittedDate[0];
     var monthInt = (CurrentDate.month() + 1);
 
-    dbObj.expenses.find({userId: req.params.id,MonthNumb:monthInt},function(error,expenses){
-            if(error){
-                res.send(error);
-            }
-            else if (expenses) {
-                var Summary = new ExpenseSummary({userId:req.params.id, Month: monthString, MonthNumb: monthInt, AmountSpent:0, BoughtBy: [], QualityAVG: 0, QuantityAVG: 0, GPriceAVG: 0});         
-                for (var i = 0; i < expenses.length; i++) {
-                    if(Summary.BoughtBy[0] !== expenses[i].BoughtBy.toString()){
-                        Summary.BoughtBy.push(expenses[i].BoughtBy);
-                    }
-                    Summary.AmountSpent = Summary.AmountSpent + expenses[i].AmountSpent;
-                    Summary.QualityAVG = Summary.QualityAVG + expenses[i].Quality;
-                    Summary.QuantityAVG = Summary.QuantityAVG + expenses[i].Quantity;
-                    Summary.GPriceAVG = Summary.GPriceAVG + expenses[i].GPrice;
-                }
-                Summary.QualityAVG = Summary.QualityAVG / expenses.length;
-                Summary.QuantityAVG = Summary.QuantityAVG / expenses.length;
-                Summary.GPriceAVG = Summary.GPriceAVG / expenses.length;
-                res.send(Summary);
-            }
-            else {
-                console.log('No Weed Bought this Month!');
-            }
-        })
+    let newExpense = new singleExpense({
+        userId: req.body.userId,
+        Month: monthString,
+        MonthNumb: monthInt,
+        AmountSpent: req.body.AmountSpent,
+        BoughtBy: req.body.BoughtBy,
+        BoughtDate: FormattedDate,
+        Quality: req.body.Quality,
+        Quantity: req.body.Quantity,
+        GPrice: req.body.GPrice
+    })
+
+    console.log(newExpense);
+
+    Expense.addExpense(newExpense, (err, expense) => {
+        if (err) {
+            return res.send();
+        }
+        if (!expense) {
+            res.json({ success: false, msg: "Missing Parameters" });
+        }
+        else {
+            res.json({ success: true, msg: "speriamo che " + expense.BoughtBy + ' abbia il ganjone oggi!' });
+        }
+    });
 });
 
-router.get('/getAllMonthsExpenses/:id/:monthnmb',function(req,res,next){
-    var MonthNumb = parseInt(req.params.monthnmb);
+router.get('/MonthSummaryExpenses/:id', function (req, res, next) {
+    var monthString = '';
+    var FormattedDate = CurrentDate.format('LLL');
+    var SplittedDate = FormattedDate.split(" ");
+    monthString = SplittedDate[0];
+    var monthInt = (CurrentDate.month() + 1);
 
-    dbObj.expenses.find({userId: req.params.id,MonthNumb:MonthNumb},function(error,expenses){
-            if(error){
+    Expense.getExpenseByMonthNumbAndId(monthInt, req.params.id, function (error, expenses) {
+        if (error) {
+            res.status = 400;
+            res.send(error);
+        }
+        else if (expenses) {
+            Expense.getSummaryFromMonthExpenses(res, expenses, function (err, summary) {
+                console.log(summary);
+                if (err) {
+                    throw err;
+                }
+                if (summary) {
+                    console.log(summary);
+                }
+                else {
+                    res.send(summary);
+                }
+            })
+        }
+        else {
+            console.log('No Weed Bought this Month!');
+        }
+    })
+});
+
+router.get('/getAllSelectedMonthsExpenses/:id/:monthnmb',function(req,res,next){
+    var MonthNumb = parseInt(req.params.monthnmb);
+    Expense.getAllSelectedMonthsExpenses(req.params.id,MonthNumb,function(error,expenses){
+        if(error){
                 res.send(error);
             }
             else if (expenses) {
@@ -67,7 +87,8 @@ router.get('/getAllMonthsExpenses/:id/:monthnmb',function(req,res,next){
             else {
                 console.log('No Weed Bought this Month!');
             }
-        })
+    });
 });
+
 
 module.exports = router;
