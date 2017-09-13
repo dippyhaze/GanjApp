@@ -2,6 +2,7 @@ import { UserService } from './../../services/user.services';
 import { Component, OnInit } from '@angular/core';
 import { Http } from '@angular/http';
 import { Router, ActivatedRoute, UrlSegment } from '@angular/router';
+import {montlyPurchaseReturnModel} from './../../models/purchaseModels';
 
 
 
@@ -14,6 +15,9 @@ export class WelcomeComponent implements OnInit {
   currentUser : any;
   currentUsername : string;
   currentUserId: string;
+  montlyReturnModel : montlyPurchaseReturnModel[];
+  totalSpent : number;
+
 
 
   constructor(private http: Http,
@@ -36,7 +40,13 @@ logout(){
 
 ngOnInit() {
  this.userService.getCurrentMonthExpenses(this.currentUserId).subscribe(data =>{
-   console.log(data);
+  
+   this.totalSpent = data.TotalAmount;
+   this.montlyReturnModel = data.ExpensesArray;
+
+   console.log(this.montlyReturnModel);
+
+
  })
   
 }

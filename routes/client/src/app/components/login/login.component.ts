@@ -53,7 +53,7 @@ export class LoginComponent {
        this.token = data.token;
        this.success = data.success;
        this.message = data.msg;
-       //this.userId = data.user.id
+       
       
 
        if(this.success == true){

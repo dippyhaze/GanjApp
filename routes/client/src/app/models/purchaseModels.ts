@@ -1,8 +1,13 @@
-export class newPurchase {
-    userId: string;
+export class montlyPurchaseReturnModel {
+    
     AmountSpent: number;
     BoughtBy: string;
     Quality: number;
     Quantity: number;
-    Gprice: number;
+    GPrice: number;
+    Month :  string;
+    MonthNumb : number;
+    BoughtDate : Date;
+
+
 }

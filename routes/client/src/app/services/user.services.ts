@@ -34,7 +34,7 @@ export class UserService {
     }
 
     getCurrentMonthExpenses(currentUserId :string){
-        return this.http.get('expenses/MonthSummaryExpenses/' + currentUserId)
+        return this.http.get('http://192.168.1.16:3000/expenses/getAllCurrentMonthsExpenses/' + currentUserId)
         .map((res: Response)=> res.json());
     }
     

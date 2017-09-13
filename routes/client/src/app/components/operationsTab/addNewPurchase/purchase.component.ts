@@ -1,4 +1,4 @@
-import { newPurchase } from './../../../models/purchaseModels';
+
 import { Component } from '@angular/core';
 import { Http } from '@angular/http';
 import { Router, ActivatedRoute, UrlSegment } from '@angular/router';
@@ -64,6 +64,7 @@ export class PurchaseComponent {
       if(this.success == true){
         
         this.showAlert = true;
+        this.changeRoute('welcome')
         
        }
        else if (this.success == false) {

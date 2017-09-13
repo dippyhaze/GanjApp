@@ -14,7 +14,7 @@
               <thead>
                 <tr>
                   <th># </th>
-                  <th>Totale € spesi</th>
+                  <th>Totale spesi</th>
                   <th>Comprato da</th>
                   <th>Qualità (da 1 a 5)</th>
                   <th>Quantità (gr)</th>
@@ -22,13 +22,13 @@
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <th scope="row">1</th>
-                  <td>150</td>
-                  <td>Jacopino</td>
-                  <td>5</td>
-                  <td>10</td>
-                  <td>10</td>
+                <tr *ngFor="let item of montlyReturnModel">
+                  <th  class="text-center" scope="row">{{item.MonthNumb}}</th>
+                  <td class="center">{{item.AmountSpent}} €</td>
+                  <td class="center">{{item.BoughtBy}}</td>
+                  <td class="center">{{item.Quality}}</td>
+                  <td class="center">{{item.Quantity}}</td>
+                  <td class="center">{{item.GPrice}} €/gr</td>
                 </tr>
               </tbody>
             </table>
