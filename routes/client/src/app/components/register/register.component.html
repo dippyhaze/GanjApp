@@ -1,4 +1,4 @@
-<body>
+
     <div class="view">
         <div class="container pt-5">
             <form [formGroup]="form" (ngSubmit)="register()"class="form-horizontal" role="form">
@@ -12,12 +12,12 @@
                 <div class="row">
                     <div class="col-md-3"></div>
                     <div class="col-md-6">
-                        <div class="form-group has-danger">
+                        <div class="form-group">
                             <label class="sr-only" for="email">Indirizzo mail</label>
                             <div class="input-group mb-2 mr-sm-2 mb-sm-0">
                                 <div class="input-group-addon" style="width: 2.6rem"><i class="fa fa-at"></i></div>
                                 <input type="text" formControlName="email" class="form-control" id="username"
-                                       placeholder="loveWeed@example.thc" required autofocus>
+                                       placeholder="E-mail es: loveWeed@example.thc" required autofocus>
                             </div>
                         </div>
                     </div>
@@ -25,12 +25,12 @@
                 <div class="row">
                     <div class="col-md-3"></div>
                     <div class="col-md-6">
-                        <div class="form-group has-danger">
+                        <div class="form-group">
                             <label class="sr-only" for="email">Nome</label>
                             <div class="input-group mb-2 mr-sm-2 mb-sm-0">
                                 <div class="input-group-addon" style="width: 2.6rem"><i class="fa fa-at"></i></div>
                                 <input type="text" formControlName="username" class="form-control" id="name"
-                                       placeholder="Jerry Senna" required autofocus>
+                                       placeholder="Username es: Jerry Senna" required autofocus>
                             </div>
                         </div>
                     </div>
@@ -70,16 +70,12 @@
                     <strong>{{message}}</strong>
                   </div>
                 <div class="row" style="padding-top: 1rem">
-                    <div class="col-md-3">
-                        
+                        <div class="col-md-2"></div>
+                        <div class="col-md-6 mx-auto">
+                            <button type="button" (click)="changeRoute('login')" class="btn btn-success mr-5"><i class="fa fa-sign-in"></i> Vai alla Login</button>
+                            <button  [disabled]="!form.valid" type="submit" class="btn btn-outline-warning "><i class="fa fa-user-plus mr-1"  ></i>Registrati tossico!</button>
+                       </div>
                     </div>
-                    <div class="col-md-6 mx-auto">
-                      
-                        <button  [disabled]="!form.valid"  type="submit" class="btn btn-outline-warning "><i class="fa fa-user-plus mr-1"  ></i>Conferma</button>
-                        <button  (click)="changeRoute('login')" type="button" class="btn btn-outline-success "><i class="fa fa-user-plus mr-1"  ></i>Vai alla login</button>
-                </div>
-                </div>
             </form>
         </div>
     </div>
-    </body>

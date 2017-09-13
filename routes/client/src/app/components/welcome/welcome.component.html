@@ -1,42 +1,34 @@
 <nav class="navbar navbar-light bg-faded">
-    <a class="navbar-brand" href="#">
+  <a class="navbar-brand">
+      <a class="mr-5 pr-5">Ciao {{currentUsername}}</a>
       <img src="/assets/Images/nav.png" width="30" height="30" class="d-inline-block align-top" alt="">
       Ganjapp
+      <a class="btn btn-outline-success ml-5" (click)="logout()">Log-Out</a>
+      <a class="btn btn-outline-success ml-1" (click)="changeRoute('purchase')">Aggiungi Acquisto</a>
     </a>
-    <a class="btn btn-outline-success" (click)="changeRoute('purchase')">Aggiungi Acquisto</a>
-
-  </nav>
-
+    </nav>
 <div id="carouselExampleControls" class="carousel slide col-md-12 mt-5" data-ride="carousel">
-    <div class="carousel-inner col-md-6 mx-auto" role="listbox">
+    <div class="carousel-inner col-md-8 mx-auto" role="listbox">
       <div class="carousel-item active">
-          <table class="table table-size table-striped table-inverse mx-auto">
+          <table class="table table-striped table-inverse mx-auto">
               <thead>
                 <tr>
                   <th># </th>
-                  <th>Euro spesi</th>
-                  <th>Grammi acquistati</th>
-                  <th>Comprati da</th>
+                  <th>Totale € spesi</th>
+                  <th>Comprato da</th>
+                  <th>Qualità (da 1 a 5)</th>
+                  <th>Quantità (gr)</th>
+                  <th>Prezzo al Gr</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
                   <th scope="row">1</th>
                   <td>150</td>
-                  <td>15g</td>
-                  <td>Mattx</td>
-                </tr>
-                <tr>
-                  <th scope="row">16</th>
-                  <td>100</td>
-                  <td>10g</td>
-                  <td>Jaco</td>
-                </tr>
-                <tr>
-                  <th scope="row">26</th>
-                  <td>130</td>
-                  <td>10g</td>
-                  <td>Fabio</td>
+                  <td>Jacopino</td>
+                  <td>5</td>
+                  <td>10</td>
+                  <td>10</td>
                 </tr>
               </tbody>
             </table>
@@ -56,6 +48,8 @@
       <span class="carousel-control-next-icon" aria-hidden="true"></span>
       <span class="sr-only">Next</span>
     </a>
-  </div>
+ </div>
 </div>
+<div class="under-carousel">
 
+</div>

@@ -32,6 +32,11 @@ export class UserService {
         return this.http.post('http://192.168.1.16:3000/expenses/insertNewExpense', model)
         .map((res: Response)=> res.json());
     }
+
+    getCurrentMonthExpenses(currentUserId :string){
+        return this.http.get('expenses/MonthSummaryExpenses/' + currentUserId)
+        .map((res: Response)=> res.json());
+    }
     
 }
 
