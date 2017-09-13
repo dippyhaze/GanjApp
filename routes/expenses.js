@@ -96,5 +96,29 @@ router.get('/getAllSelectedMonthsExpenses/:id/:monthnmb',function(req,res,next){
     });
 });
 
+router.get('/getAllCurrentMonthsExpenses/:id',function(req,res,next){
+    var monthString = '';
+    var FormattedDate = CurrentDate.format('LLL');
+    var SplittedDate = FormattedDate.split(" ");
+    monthString = SplittedDate[0];
+    var monthInt = (CurrentDate.month() + 1);
+    Expense.getAllSelectedMonthsExpenses(req.params.id,monthInt,function(error,expenses){
+        if(error){
+                res.send(error);
+            }
+            else if (expenses) {
+               var ExpenseArray = new ExpensesArray({ExpensesArray:[],TotalAmount:0});
+                for (var i = 0; i < expenses.length; i++) {
+                    ExpenseArray.ExpensesArray.push(expenses[i]);
+                    ExpenseArray.TotalAmount = ExpenseArray.TotalAmount + expenses[i].AmountSpent;
+                }
+                res.send(ExpenseArray)
+            }            
+            else {
+                console.log('No Weed Bought this Month!');
+            }
+    });
+});
+
 
 module.exports = router;
