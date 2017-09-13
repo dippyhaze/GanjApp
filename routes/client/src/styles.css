@@ -12,6 +12,7 @@ body,
     -moz-background-size: cover;
     -o-background-size: cover;
     background-size: cover;
+    height:100vh;
 }
 .background-welcome {
     background-color:grey;
@@ -30,4 +31,11 @@ text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;;
 .table-size{
     width:600px;
 }
+
+.under-carousel{
+    width: 100vw;
+    height: 400px;
+    background-color: grey;
+}
+
 

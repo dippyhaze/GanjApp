@@ -48,15 +48,16 @@ export class LoginComponent {
      
 
      this.userService.login(formModel).subscribe(data =>{
-       
+       console.log(data);
        this.userReturnModel = data.user;
        this.token = data.token;
        this.success = data.success;
        this.message = data.msg;
-       this.userId = data.user.id
-       console.log(data);
+       //this.userId = data.user.id
+      
 
        if(this.success == true){
+        this.userId = data.user.id
         localStorage.setItem('currentUser', JSON.stringify({ userId :this.userId ,username: this.userReturnModel.username, token: this.token, roles: this.userReturnModel.role}));
         this.changeRoute('welcome');
         

@@ -39,7 +39,7 @@ router.post('/insertNewExpense', (req, res, next) => {
             res.json({ success: false, msg: "Missing Parameters" });
         }
         else {
-            res.json({ success: true, msg: "speriamo che " + expense.BoughtBy + ' abbia il ganjone oggi!' });
+            res.send({ success: true, msg: "speriamo che " + expense.BoughtBy + ' abbia il ganjone oggi!' });
         }
     });
 });

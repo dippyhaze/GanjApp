@@ -19,7 +19,8 @@ export class PurchaseComponent {
     success: boolean = false;
     showAlert : boolean = false;
     message: string;
-    currentUserId: any;
+    currentUser: any;
+    currentUserId: string;
 
     
     
@@ -27,7 +28,11 @@ export class PurchaseComponent {
     constructor( private fb: FormBuilder,
                  private router : Router,
                  private userService : UserService,){
-    this.currentUserId = localStorage.getItem('userId');                 
+    this.currentUser =JSON.parse(localStorage.getItem('currentUser')); 
+    this.currentUserId = this.currentUser.userId;
+   
+    
+  
   
       this.form = this.fb.group({
         "userId": [this.currentUserId],
@@ -52,6 +57,19 @@ export class PurchaseComponent {
    addNewPurchase(){
     let formModel = this.form.value;
     this.userService.addNewPurchase(formModel).subscribe(data =>{
+      console.log(data);
+      this.success = data.success;
+      this.message = data.msg;
+
+      if(this.success == true){
+        
+        this.showAlert = true;
+        
+       }
+       else if (this.success == false) {
+         this.showAlert = true;
+       }
+
         
       });
 

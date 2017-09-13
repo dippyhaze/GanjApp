@@ -25,7 +25,7 @@ export class RegisterComponent {
                private router : Router){
 
     this.form = this.fb.group({
-      "email": [''],
+      "email": ['',[Validators.email, Validators.required]],
       "username": [''],
       "password": [''],
       "confirmPassword" :['']
@@ -53,8 +53,8 @@ register(){
     console.log(data);
 
     if(this.success == true){
-     
-      this.changeRoute('login');
+      this.showAlert = true;
+      this.message= "Bravo drogato, ora vai alla login per accedere";
       
      }
      else if (this.success == false) {
