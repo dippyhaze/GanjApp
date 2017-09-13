@@ -3,6 +3,7 @@ const router = express.Router();
 const Expense = require("../models/expense");
 const singleExpense = Expense.Expense;
 const ExpenseSummary = Expense.ExpenseSummary;
+const ExpensesArray = Expense.ExpenseArray;
 const config = require("../config/database");
 var moment = require('moment');
 var CurrentDate = moment();
@@ -30,7 +31,7 @@ router.post('/insertNewExpense', (req, res, next) => {
 
     console.log(newExpense);
 
-    Expense.addExpense(newExpense, (err, expense) => {
+    Expense.addExpense(newExpense, (err,expense) => {
         if (err) {
             return res.send();
         }
@@ -82,7 +83,12 @@ router.get('/getAllSelectedMonthsExpenses/:id/:monthnmb',function(req,res,next){
                 res.send(error);
             }
             else if (expenses) {
-                res.send(expenses);
+               var ExpenseArray = new ExpensesArray({ExpensesArray:[],TotalAmount:0});
+                for (var i = 0; i < expenses.length; i++) {
+                    ExpenseArray.ExpensesArray.push(expenses[i]);
+                    ExpenseArray.TotalAmount = ExpenseArray.TotalAmount + expenses[i].AmountSpent;
+                }
+                res.send(ExpenseArray)
             }            
             else {
                 console.log('No Weed Bought this Month!');

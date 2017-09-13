@@ -20,6 +20,10 @@ var expenseSchema = mongoose.Schema({
        required:true,      
        type: String
     },
+    BoughtDate: {
+       required:true,      
+       type: Date
+    },
     Quality: {
        required:true,      
        type: Number
@@ -67,12 +71,23 @@ var expenseSummarySchema = mongoose.Schema({
     }
 });
 
+var expenseArraySchema = mongoose.Schema({
+    ExpensesArray:{
+        type: []
+    },
+    TotalAmount: {
+       type: Number
+    }
+});
+
 const Expense =  mongoose.model('expensesummaries', expenseSchema);
 const ExpenseSummary =  mongoose.model('ExpenseSummary', expenseSummarySchema);
+const ExpenseArray =  mongoose.model('ExpenseArray', expenseArraySchema);
 
 module.exports = {
     Expense: Expense,
-    ExpenseSummary: ExpenseSummary
+    ExpenseSummary: ExpenseSummary,
+    ExpenseArray: ExpenseArray
 }
 
 module.exports.getExpenseById = function(id,callback){
